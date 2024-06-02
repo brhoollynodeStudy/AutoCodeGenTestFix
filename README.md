@@ -30,7 +30,7 @@
 
 首先，确保安装好必要的库：
 ```bash
-pip install langchain openai pytest
+pip install langchain langchain_openai  pytest
 ```
 
 ### 2. 设置 OpenAI API 密钥
