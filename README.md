@@ -24,6 +24,37 @@
 +----------------------+      +----------------------+      +----------------------+      +----------------------+      +----------------------+
 ```
 
+执行流程如下：
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant CodeGenerationAgent
+    participant TestGenerationAgent
+    participant TestExecutionAgent
+    participant TestResultAgent
+    participant CodeFixAgent
+
+    User->>CodeGenerationAgent: 提供需求描述
+    CodeGenerationAgent->>User: 返回初始代码
+    User->>TestGenerationAgent: 提供初始代码
+    TestGenerationAgent->>User: 返回测试用例
+    User->>TestExecutionAgent: 执行测试用例
+    TestExecutionAgent->>TestResultAgent: 获取测试结果
+    TestResultAgent->>User: 测试失败/测试通过
+
+    alt 测试失败
+        User->>CodeFixAgent: 提供代码和测试结果
+        CodeFixAgent->>User: 返回修复后的代码
+        User->>TestExecutionAgent: 重新执行测试用例
+        TestExecutionAgent->>TestResultAgent: 获取测试结果
+        TestResultAgent->>User: 测试失败/测试通过
+    end
+
+    Note over User: 重复测试和修复直到通过测试
+    TestResultAgent->>User: 测试通过
+```
+
 ## 使用方式
 
 ### 1. 安装必要的库
